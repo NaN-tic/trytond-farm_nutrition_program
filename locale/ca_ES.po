@@ -1,0 +1,67 @@
+# 
+msgid ""
+msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+msgctxt "field:nutrition.program,bom:"
+msgid "BOM"
+msgstr "Llista de materials"
+
+msgctxt "field:nutrition.program,create_date:"
+msgid "Create Date"
+msgstr "Data creació"
+
+msgctxt "field:nutrition.program,create_uid:"
+msgid "Create User"
+msgstr "Usuari creació"
+
+msgctxt "field:nutrition.program,end_weight:"
+msgid "End Weight"
+msgstr "Pes final"
+
+msgctxt "field:nutrition.program,id:"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "field:nutrition.program,product:"
+msgid "Product"
+msgstr "Producte"
+
+msgctxt "field:nutrition.program,rec_name:"
+msgid "Name"
+msgstr "Nom"
+
+msgctxt "field:nutrition.program,start_weight:"
+msgid "Start Weight"
+msgstr "Pes inicial"
+
+msgctxt "field:nutrition.program,write_date:"
+msgid "Write Date"
+msgstr "Data modificació"
+
+msgctxt "field:nutrition.program,write_uid:"
+msgid "Write User"
+msgstr "Usuari modificació"
+
+msgctxt "model:ir.action,name:act_nutrition_program"
+msgid "Nutrition Programs"
+msgstr "Programes d'Alimentació"
+
+msgctxt "model:ir.action.act_window,name:act_nutrition_program"
+msgid "Nutrition Programs"
+msgstr "Programa d'Alimentació"
+
+msgctxt "model:ir.ui.menu,name:menu_nutrition_program"
+msgid "Nutrition Program"
+msgstr "Programa d'Alimentació"
+
+msgctxt "model:ir.ui.menu,name:menu_nutrition_program_tree"
+msgid "Nutrition Programs"
+msgstr "Programes d'Alimentació"
+
+msgctxt "model:nutrition.program,name:"
+msgid "Nutrition Program"
+msgstr "Programa d'Alimentació"
+
+msgctxt "model:res.group,name:group_nutrition_program_admin"
+msgid "Nutrition Program Administration"
+msgstr "Administració de programes d'alimentació"
