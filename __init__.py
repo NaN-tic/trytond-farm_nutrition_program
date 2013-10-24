@@ -9,3 +9,6 @@ def register():
     Pool.register(
         NutritionProgram,
         module='nutrition_program', type_='model')
+    Pool.register(
+        OpenBOM,
+        module='nutrition_program', type_='wizard')
