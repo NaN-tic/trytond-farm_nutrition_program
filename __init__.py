@@ -8,6 +8,7 @@ from .nutrition_program import *
 def register():
     Pool.register(
         NutritionProgram,
+        StockLot,
         module='nutrition_program', type_='model')
     Pool.register(
         OpenBOM,

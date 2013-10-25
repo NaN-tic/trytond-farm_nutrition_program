@@ -1,12 +1,13 @@
 #The COPYRIGHT file at the top level of this repository contains the full
 #copyright notices and license terms.
 from trytond.model import ModelView, ModelSQL, fields
-from trytond.pool import Pool
+from trytond.pool import Pool, PoolMeta
 from trytond.pyson import Eval, PYSONEncoder
 from trytond.wizard import Wizard, StateAction
 from trytond.transaction import Transaction
 
-__all__ = ['NutritionProgram', 'OpenBOM']
+__all__ = ['NutritionProgram', 'StockLot', 'OpenBOM']
+__metaclass__ = PoolMeta
 
 
 class NutritionProgram(ModelSQL, ModelView):
@@ -27,8 +28,38 @@ class NutritionProgram(ModelSQL, ModelView):
             return self.product.boms[0].bom.id
 
     def get_rec_name(self, name=None):
-        return ' %s ( %s - %s) ' % (self.product.rec_name,
+        return '%s (%s - %s)' % (self.product.rec_name,
             self.start_weight or '',  self.end_weight or '')
+
+
+class StockLot:
+    __name__ = 'stock.lot'
+
+    nutrition_program = fields.Function(fields.Many2One('nutrition.program',
+            'Nutrition Program', domain=[
+                ('product', '=', Eval('product')),
+             ], depends=['product']), 'get_nutrition_program')
+
+    def get_nutrition_program(self, name):
+        pool = Pool()
+        Program = pool.get('nutrition.program')
+
+        animal = self.animal_group if self.animal_group else self.animal
+        if not animal:
+            return
+
+        domain = [('product', '=', self.product)]
+        if animal.current_weight:
+            weight = animal.current_weight.weight
+            domain.extend([
+                        ('start_weight', '<=', weight),
+                        ('end_weight', '>=', weight),
+                    ], )
+        programs = Program.search(domain, order=[
+                ('end_weight', 'DESC'),
+            ], limit=1)
+        if len(programs) > 0:
+            return programs[0].id
 
 
 class OpenBOM(Wizard):
