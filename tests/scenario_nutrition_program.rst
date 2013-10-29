@@ -85,6 +85,15 @@ Create products::
     >>> group_template.save()
     >>> group_product = Product(template=group_template)
     >>> group_product.save()
+    >>> grain_template = ProductTemplate(
+    ...     name='Graing',
+    ...     default_uom=unit,
+    ...     type='goods',
+    ...     list_price=Decimal('40'),
+    ...     cost_price=Decimal('25'))
+    >>> grain_template.save()
+    >>> grain_product = Product(template=grain_template)
+    >>> grain_product.save()
 
 Create sequence::
 
@@ -177,7 +186,8 @@ Create nutrition program::
     >>> nutrition_program = NutritionProgram(
     ...     start_weight=10.0,
     ...     end_weight=30.0,
-    ...     product=individual_product)
+    ...     product=grain_product)
+    ...     animal_product=individual_product)
     >>> nutrition_program.save()
     >>> individual.lot.nutrition_program == None
     True
@@ -202,7 +212,8 @@ Create another nutrition program::
     >>> nutrition_program2 = NutritionProgram(
     ...     start_weight=50.0,
     ...     end_weight=70.0,
-    ...     product=individual_product)
+    ...     product=grain_product)
+    ...     animal_product=individual_product)
     >>> nutrition_program2.save()
     >>> AnimalWeight = Model.get('farm.animal.weight')
     >>> kg, = ProductUom.find([('name', '=', 'Kilogram')])

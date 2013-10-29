@@ -10,4 +10,6 @@
     <field name="product"/>
     <label name="bom"/>
     <field name="bom"/>
+    <label name="animal_product"/>
+    <field name="animal_product"/>
 </form>

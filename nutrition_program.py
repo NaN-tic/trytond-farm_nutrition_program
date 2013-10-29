@@ -17,6 +17,7 @@ class NutritionProgram(ModelSQL, ModelView):
     start_weight = fields.Float('Start Weight')
     end_weight = fields.Float('End Weight')
     product = fields.Many2One('product.product', 'Product', required=True)
+    animal_product = fields.Many2One('product.product', 'Animal Product')
     bom = fields.Function(fields.Many2One('production.bom', 'BOM',
         domain=[
             ('output_products', '=', Eval('product', 0)),
@@ -48,16 +49,19 @@ class StockLot:
         if not animal:
             return
 
-        domain = [('product', '=', self.product)]
+        domain = [('animal_product', '=', self.product)]
+        order = [('end_weight', 'DESC')]
+        weight_domain = []
         if animal.current_weight:
             weight = animal.current_weight.weight
-            domain.extend([
+            weight_domain = [
                         ('start_weight', '<=', weight),
                         ('end_weight', '>=', weight),
-                    ], )
-        programs = Program.search(domain, order=[
-                ('end_weight', 'DESC'),
-            ], limit=1)
+                    ]
+        programs = Program.search(domain + weight_domain, order=order, limit=1)
+        if len(programs) > 0:
+            return programs[0].id
+        programs = Program.search(weight_domain, order=order, limit=1)
         if len(programs) > 0:
             return programs[0].id
 
