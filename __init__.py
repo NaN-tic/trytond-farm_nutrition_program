@@ -1,5 +1,5 @@
-#The COPYRIGHT file at the top level of this repository contains the full
-#copyright notices and license terms.
+# The COPYRIGHT file at the top level of this repository contains the full
+# copyright notices and license terms.
 
 from trytond.pool import Pool
 from .nutrition_program import *
@@ -7,9 +7,11 @@ from .nutrition_program import *
 
 def register():
     Pool.register(
+        Animal,
+        AnimalGroup,
         NutritionProgram,
-        StockLot,
-        module='nutrition_program', type_='model')
+        Specie,
+        module='farm_nutrition_program', type_='model')
     Pool.register(
         OpenBOM,
-        module='nutrition_program', type_='wizard')
+        module='farm_nutrition_program', type_='wizard')

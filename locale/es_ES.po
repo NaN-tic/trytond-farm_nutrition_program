@@ -2,66 +2,102 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
-msgctxt "field:nutrition.program,bom:"
+msgctxt "field:farm.animal,nutrition_program:"
+msgid "Nutrition Program"
+msgstr "Programa de alimentación"
+
+msgctxt "field:farm.animal.group,nutrition_program:"
+msgid "Nutrition Program"
+msgstr "Programa de alimentación"
+
+msgctxt "field:farm.nutrition.program,animal_type:"
+msgid "Animal Type"
+msgstr "Tipo animal"
+
+msgctxt "field:farm.nutrition.program,bom:"
 msgid "BOM"
 msgstr "Lista de material"
 
-msgctxt "field:nutrition.program,create_date:"
+msgctxt "field:farm.nutrition.program,create_date:"
 msgid "Create Date"
 msgstr "Fecha de creación"
 
-msgctxt "field:nutrition.program,create_uid:"
+msgctxt "field:farm.nutrition.program,create_uid:"
 msgid "Create User"
 msgstr "Usuario de creación"
 
-msgctxt "field:nutrition.program,end_weight:"
+msgctxt "field:farm.nutrition.program,end_weight:"
 msgid "End Weight"
 msgstr "Peso final"
 
-msgctxt "field:nutrition.program,id:"
+msgctxt "field:farm.nutrition.program,id:"
 msgid "ID"
-msgstr "ID"
+msgstr "Identificador"
 
-msgctxt "field:nutrition.program,product:"
+msgctxt "field:farm.nutrition.program,product:"
 msgid "Product"
 msgstr "Producto"
 
-msgctxt "field:nutrition.program,rec_name:"
+msgctxt "field:farm.nutrition.program,rec_name:"
 msgid "Name"
 msgstr "Nombre"
 
-msgctxt "field:nutrition.program,start_weight:"
+msgctxt "field:farm.nutrition.program,specie:"
+msgid "Specie"
+msgstr "Especie"
+
+msgctxt "field:farm.nutrition.program,start_weight:"
 msgid "Start Weight"
 msgstr "Peso inicial"
 
-msgctxt "field:nutrition.program,write_date:"
+msgctxt "field:farm.nutrition.program,write_date:"
 msgid "Write Date"
 msgstr "Fecha modificación"
 
-msgctxt "field:nutrition.program,write_uid:"
+msgctxt "field:farm.nutrition.program,write_uid:"
 msgid "Write User"
 msgstr "Usuario modificación"
 
+msgctxt "model:farm.nutrition.program,name:"
+msgid "Nutrition Program"
+msgstr "Programa de alimentación"
+
 msgctxt "model:ir.action,name:act_nutrition_program"
 msgid "Nutrition Programs"
-msgstr "Programas de Alimentación"
+msgstr "Programas de alimentación"
+
+msgctxt "model:ir.action,name:wizard_bom_open"
+msgid "BOMs"
+msgstr "Listas de material"
 
 msgctxt "model:ir.action.act_window,name:act_nutrition_program"
 msgid "Nutrition Programs"
-msgstr "Programa de Alimentación"
+msgstr "Programas de alimentación"
 
-msgctxt "model:ir.ui.menu,name:menu_nutrition_program"
+msgctxt "model:res.group,name:group_nutrition_program"
+msgid "Farm / Nutriton Program"
+msgstr "Granja / Programa de alimentación"
+
+msgctxt "selection:farm.nutrition.program,animal_type:"
+msgid "Female"
+msgstr "Hembra"
+
+msgctxt "selection:farm.nutrition.program,animal_type:"
+msgid "Group"
+msgstr "Grupo"
+
+msgctxt "selection:farm.nutrition.program,animal_type:"
+msgid "Individual"
+msgstr "Individual"
+
+msgctxt "selection:farm.nutrition.program,animal_type:"
+msgid "Male"
+msgstr "Macho"
+
+msgctxt "view:farm.nutrition.program:"
 msgid "Nutrition Program"
-msgstr "Programa de Alimentación"
+msgstr "Programa de alimentación"
 
-msgctxt "model:ir.ui.menu,name:menu_nutrition_program_tree"
+msgctxt "view:farm.nutrition.program:"
 msgid "Nutrition Programs"
-msgstr "Programas de Alimentación"
-
-msgctxt "model:nutrition.program,name:"
-msgid "Nutrition Program"
-msgstr "Programa de Alimentación"
-
-msgctxt "model:res.group,name:group_nutrition_program_admin"
-msgid "Nutrition Program Administration"
-msgstr "Administrador de programas de alimentación"
+msgstr "Programas de alimentación"

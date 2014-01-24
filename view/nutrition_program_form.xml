@@ -2,6 +2,9 @@
 <!-- The COPYRIGHT file at the top level of this repository contains the full
      copyright notices and license terms. -->
 <form string="Nutrition Program" col="4">
+    <label name="animal_type"/>
+    <field name="animal_type"/>
+    <newline/>
     <label name="start_weight"/>
     <field name="start_weight"/>
     <label name="end_weight"/>
@@ -10,6 +13,4 @@
     <field name="product"/>
     <label name="bom"/>
     <field name="bom"/>
-    <label name="animal_product"/>
-    <field name="animal_product"/>
 </form>

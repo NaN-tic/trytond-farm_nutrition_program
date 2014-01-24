@@ -1,6 +1,6 @@
-====================
-Move Events Scenario
-====================
+==========================
+Nutrition Program Scenario
+==========================
 
 =============
 General Setup
@@ -13,7 +13,7 @@ Imports::
     >>> from decimal import Decimal
     >>> from proteus import config, Model, Wizard
     >>> now = datetime.datetime.now()
-    >>> yesterday = datetime.datetime.now() - relativedelta(month=1)
+    >>> yesterday = datetime.datetime.now() - relativedelta(days=1)
     >>> today = datetime.date.today()
 
 Create database::
@@ -25,7 +25,7 @@ Install farm::
 
     >>> Module = Model.get('ir.module.module')
     >>> modules = Module.find([
-    ...         ('name', '=', 'nutrition_program'),
+    ...         ('name', '=', 'farm_nutrition_program'),
     ...         ])
     >>> Module.install([x.id for x in modules], config.context)
     >>> Wizard('ir.module.module.install_upgrade').execute('upgrade')
@@ -177,19 +177,20 @@ Create individual::
     u'L1'
     >>> individual.farm.code
     u'WH'
-    >>> individual.lot.nutrition_program == None
+    >>> individual.nutrition_program == None
     True
 
 Create nutrition program::
 
-    >>> NutritionProgram = Model.get('nutrition.program')
+    >>> NutritionProgram = Model.get('farm.nutrition.program')
     >>> nutrition_program = NutritionProgram(
+    ...     specie=pigs_specie,
+    ...     animal_type='individual',
     ...     start_weight=10.0,
     ...     end_weight=30.0,
     ...     product=grain_product)
-    ...     animal_product=individual_product)
     >>> nutrition_program.save()
-    >>> individual.lot.nutrition_program == None
+    >>> individual.nutrition_program == None
     True
 
 Add weight on animal::
@@ -204,16 +205,17 @@ Add weight on animal::
     >>> individual.reload()
     >>> individual.current_weight.weight == Decimal('15.0')
     True
-    >>> individual.lot.nutrition_program == nutrition_program
+    >>> individual.nutrition_program == nutrition_program
     True
 
 Create another nutrition program::
 
     >>> nutrition_program2 = NutritionProgram(
+    ...     specie=pigs_specie,
+    ...     animal_type='individual',
     ...     start_weight=50.0,
     ...     end_weight=70.0,
     ...     product=grain_product)
-    ...     animal_product=individual_product)
     >>> nutrition_program2.save()
     >>> AnimalWeight = Model.get('farm.animal.weight')
     >>> kg, = ProductUom.find([('name', '=', 'Kilogram')])
@@ -225,5 +227,5 @@ Create another nutrition program::
     >>> individual.reload()
     >>> individual.current_weight.weight == Decimal('60.0')
     True
-    >>> individual.lot.nutrition_program == nutrition_program2
+    >>> individual.nutrition_program == nutrition_program2
     True

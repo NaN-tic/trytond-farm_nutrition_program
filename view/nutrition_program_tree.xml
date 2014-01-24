@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
 <!-- The COPYRIGHT file at the top level of this repository contains the full
      copyright notices and license terms. -->
-<tree string="Nutrition program">
+<tree string="Nutrition Programs">
     <field name="product"/>
+    <field name="animal_type"/>
     <field name="start_weight"/>
     <field name="end_weight"/>
     <field name="bom"/>

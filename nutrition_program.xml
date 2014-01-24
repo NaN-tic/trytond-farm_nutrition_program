@@ -3,30 +3,44 @@
      copyright notices and license terms. -->
 <tryton>
     <data>
+        <!-- groups -->
+        <record model="res.group" id="group_nutrition_program">
+            <field name="name">Farm / Nutriton Program</field>
+        </record>
+        <record model="res.user-res.group"
+                id="user_admin_group_nutrition_programs">
+            <field name="user" ref="res.user_admin"/>
+            <field name="group" ref="group_nutrition_program"/>
+        </record>
+        <record model="res.user-res.group"
+                id="user_trigger_group_nutrition_programs">
+            <field name="user" ref="res.user_trigger"/>
+            <field name="group" ref="group_nutrition_program"/>
+        </record>
+
+        <!-- farm.nutrition.program -->
         <record model="ir.ui.view" id="nutrition_program_view_form">
-            <field name="model">nutrition.program</field>
+            <field name="model">farm.nutrition.program</field>
             <field name="type">form</field>
             <field name="name">nutrition_program_form</field>
         </record>
+
         <record model="ir.ui.view" id="nutrition_program_view_tree">
-            <field name="model">nutrition.program</field>
+            <field name="model">farm.nutrition.program</field>
             <field name="type">tree</field>
             <field name="name">nutrition_program_tree</field>
         </record>
 
-
         <record model="ir.action.act_window" id="act_nutrition_program">
             <field name="name">Nutrition Programs</field>
-            <field name="res_model">nutrition.program</field>
+            <field name="res_model">farm.nutrition.program</field>
         </record>
-
         <record model="ir.action.act_window.view"
                 id="act_nutrition_program_view1">
             <field name="sequence" eval="10"/>
             <field name="view" ref="nutrition_program_view_tree"/>
             <field name="act_window" ref="act_nutrition_program"/>
         </record>
-
         <record model="ir.action.act_window.view"
                 id="act_nutrition_program_view2">
             <field name="sequence" eval="20"/>
@@ -34,55 +48,37 @@
             <field name="act_window" ref="act_nutrition_program"/>
         </record>
 
-        <menuitem name="Nutrition Program" id="menu_nutrition_program"
-            sequence="8"/>
-        <menuitem parent="menu_nutrition_program" action="act_nutrition_program"
-            id="menu_nutrition_program_tree" sequence="10"/>
-
-        <!-- Permissions -->
-        <record model="res.group" id="group_nutrition_program_admin">
-            <field name="name">Nutrition Program Administration</field>
-        </record>
-
-        <record model="res.user-res.group"
-                id="user_admin_group_nutrition_program_admin">
-            <field name="user" ref="res.user_admin"/>
-            <field name="group" ref="group_nutrition_program_admin"/>
-        </record>
-
-        <record model="ir.ui.menu-res.group" id="menugroup_nutrition_program">
-            <field name="menu" ref="menu_nutrition_program"/>
-            <field name="group" ref="group_nutrition_program_admin"/>
-        </record>
-
-
         <record model="ir.model.access" id="access_nutrition_program">
-            <field name="model" search="[('model', '=', 'nutrition.program')]"/>
+            <field name="model"
+                search="[('model', '=', 'farm.nutrition.program')]"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="False"/>
             <field name="perm_create" eval="False"/>
             <field name="perm_delete" eval="False"/>
         </record>
 
-        <record model="ir.model.access" id="access_nutrition_program_admin">
-            <field name="model" search="[('model', '=', 'nutrition.program')]"/>
-            <field name="group" ref="group_nutrition_program_admin"/>
+        <record model="ir.model.access"
+                id="access_nutrition_program_group_nutrition_program">
+            <field name="model"
+                search="[('model', '=', 'farm.nutrition.program')]"/>
+            <field name="group" ref="group_nutrition_program"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
             <field name="perm_create" eval="True"/>
             <field name="perm_delete" eval="True"/>
         </record>
 
+        <!-- farm.nutrition.program.open_bom -->
         <record model="ir.action.wizard" id="wizard_bom_open">
             <field name="name">BOMs</field>
-            <field name="wiz_name">nutrition.program.open.bom</field>
-        </record>
-        <record model="ir.action.keyword"
-            id="act_nutrition_program_open_keyword1">
-            <field name="keyword">form_relate</field>
-            <field name="model">nutrition.program,-1</field>
-            <field name="action" ref="wizard_bom_open"/>
+            <field name="wiz_name">farm.nutrition.program.open_bom</field>
         </record>
 
+        <record model="ir.action.keyword"
+                id="act_nutrition_program_open_keyword1">
+            <field name="keyword">form_relate</field>
+            <field name="model">farm.nutrition.program,-1</field>
+            <field name="action" ref="wizard_bom_open"/>
+        </record>
     </data>
 </tryton>

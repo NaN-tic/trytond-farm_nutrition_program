@@ -6,7 +6,7 @@ import re
 import os
 import ConfigParser
 
-MODULE = 'nutrition_program'
+MODULE = 'farm_nutrition_program'
 PREFIX = 'nantic'
 MODULE2PREFIX = {}
 

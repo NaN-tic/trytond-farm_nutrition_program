@@ -1,4 +1,3 @@
 # The COPYRIGHT file at the top level of this repository contains the full
 # copyright notices and license terms.
-
-from .test import suite
+from .test_nutrition_program import suite
