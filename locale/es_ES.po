@@ -16,7 +16,7 @@ msgstr "Tipo animal"
 
 msgctxt "field:farm.nutrition.program,bom:"
 msgid "BOM"
-msgstr "Lista de material"
+msgstr "LdM"
 
 msgctxt "field:farm.nutrition.program,create_date:"
 msgid "Create Date"
@@ -68,7 +68,7 @@ msgstr "Programas de alimentación"
 
 msgctxt "model:ir.action,name:wizard_bom_open"
 msgid "BOMs"
-msgstr "Listas de material"
+msgstr "LdMs"
 
 msgctxt "model:ir.action.act_window,name:act_nutrition_program"
 msgid "Nutrition Programs"

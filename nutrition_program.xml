@@ -68,6 +68,22 @@
             <field name="perm_delete" eval="True"/>
         </record>
 
+        <!-- farm.animal -->
+        <record model="ir.ui.view" id="farm_animal_view_form">
+            <field name="model">farm.animal</field>
+            <field name="inherit" ref="farm.farm_animal_form_view"/>
+            <field name="type">form</field>
+            <field name="name">farm_animal_form</field>
+        </record>
+
+        <!-- farm.animal.group -->
+        <record model="ir.ui.view" id="farm_animal_group_view_form">
+            <field name="model">farm.animal.group</field>
+            <field name="inherit" ref="farm.farm_animal_group_form_view"/>
+            <field name="type">form</field>
+            <field name="name">farm_animal_group_form</field>
+        </record>
+
         <!-- farm.nutrition.program.open_bom -->
         <record model="ir.action.wizard" id="wizard_bom_open">
             <field name="name">BOMs</field>

@@ -2,66 +2,98 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
-msgctxt "field:nutrition.program,bom:"
-msgid "BOM"
-msgstr "Llista de materials"
+msgctxt "field:farm.animal,nutrition_program:"
+msgid "Nutrition Program"
+msgstr "Programa de nutrició"
 
-msgctxt "field:nutrition.program,create_date:"
+msgctxt "field:farm.animal.group,nutrition_program:"
+msgid "Nutrition Program"
+msgstr "Programa de nutrició"
+
+msgctxt "field:farm.nutrition.program,animal_type:"
+msgid "Animal Type"
+msgstr "Tipus animal"
+
+msgctxt "field:farm.nutrition.program,bom:"
+msgid "BOM"
+msgstr "LldM"
+
+msgctxt "field:farm.nutrition.program,create_date:"
 msgid "Create Date"
 msgstr "Data creació"
 
-msgctxt "field:nutrition.program,create_uid:"
+msgctxt "field:farm.nutrition.program,create_uid:"
 msgid "Create User"
 msgstr "Usuari creació"
 
-msgctxt "field:nutrition.program,end_weight:"
+msgctxt "field:farm.nutrition.program,end_weight:"
 msgid "End Weight"
-msgstr "Pes final"
+msgstr ""
 
-msgctxt "field:nutrition.program,id:"
+msgctxt "field:farm.nutrition.program,id:"
 msgid "ID"
 msgstr "ID"
 
-msgctxt "field:nutrition.program,product:"
+msgctxt "field:farm.nutrition.program,product:"
 msgid "Product"
 msgstr "Producte"
 
-msgctxt "field:nutrition.program,rec_name:"
+msgctxt "field:farm.nutrition.program,rec_name:"
 msgid "Name"
 msgstr "Nom"
 
-msgctxt "field:nutrition.program,start_weight:"
+msgctxt "field:farm.nutrition.program,specie:"
+msgid "Specie"
+msgstr "Espècie"
+
+msgctxt "field:farm.nutrition.program,start_weight:"
 msgid "Start Weight"
 msgstr "Pes inicial"
 
-msgctxt "field:nutrition.program,write_date:"
+msgctxt "field:farm.nutrition.program,write_date:"
 msgid "Write Date"
 msgstr "Data modificació"
 
-msgctxt "field:nutrition.program,write_uid:"
+msgctxt "field:farm.nutrition.program,write_uid:"
 msgid "Write User"
 msgstr "Usuari modificació"
 
+msgctxt "model:farm.nutrition.program,name:"
+msgid "Nutrition Program"
+msgstr "Programa de nutrició"
+
 msgctxt "model:ir.action,name:act_nutrition_program"
 msgid "Nutrition Programs"
-msgstr "Programes d'Alimentació"
+msgstr "Programes de nutrició"
 
-msgctxt "model:ir.action.act_window,name:act_nutrition_program"
-msgid "Nutrition Programs"
-msgstr "Programa d'Alimentació"
+msgctxt "model:ir.action,name:wizard_bom_open"
+msgid "BOMs"
+msgstr "Llistes de materials"
 
-msgctxt "model:ir.ui.menu,name:menu_nutrition_program"
+msgctxt "model:res.group,name:group_nutrition_program"
+msgid "Farm / Nutriton Program"
+msgstr "Granja / Programa de nutrició"
+
+msgctxt "selection:farm.nutrition.program,animal_type:"
+msgid "Female"
+msgstr "Femella"
+
+msgctxt "selection:farm.nutrition.program,animal_type:"
+msgid "Group"
+msgstr "Grup"
+
+msgctxt "selection:farm.nutrition.program,animal_type:"
+msgid "Individual"
+msgstr "Individu"
+
+msgctxt "selection:farm.nutrition.program,animal_type:"
+msgid "Male"
+msgstr "Mascle"
+
+msgctxt "view:farm.nutrition.program:"
 msgid "Nutrition Program"
-msgstr "Programa d'Alimentació"
+msgstr "Programa de nutrició"
 
-msgctxt "model:ir.ui.menu,name:menu_nutrition_program_tree"
+msgctxt "view:farm.nutrition.program:"
 msgid "Nutrition Programs"
-msgstr "Programes d'Alimentació"
-
-msgctxt "model:nutrition.program,name:"
-msgid "Nutrition Program"
-msgstr "Programa d'Alimentació"
-
-msgctxt "model:res.group,name:group_nutrition_program_admin"
-msgid "Nutrition Program Administration"
-msgstr "Administració de programes d'alimentació"
+msgstr "Programes de nutrició"
