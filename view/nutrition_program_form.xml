@@ -5,10 +5,10 @@
     <label name="animal_type"/>
     <field name="animal_type"/>
     <newline/>
-    <label name="start_weight"/>
-    <field name="start_weight"/>
-    <label name="end_weight"/>
-    <field name="end_weight"/>
+    <label name="min_consumed_feed"/>
+    <field name="min_consumed_feed"/>
+    <label name="max_consumed_feed"/>
+    <field name="max_consumed_feed"/>
     <label name="product"/>
     <field name="product"/>
     <label name="bom"/>

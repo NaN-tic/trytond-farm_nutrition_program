@@ -4,7 +4,7 @@
 <tree string="Nutrition Programs">
     <field name="product"/>
     <field name="animal_type"/>
-    <field name="start_weight"/>
-    <field name="end_weight"/>
+    <field name="min_consumed_feed"/>
+    <field name="max_consumed_feed"/>
     <field name="bom"/>
 </tree>

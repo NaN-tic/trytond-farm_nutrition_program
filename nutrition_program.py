@@ -22,8 +22,8 @@ class NutritionProgram(ModelSQL, ModelView):
         ('individual', 'Individual'),
         ('group', 'Group'),
         ], "Animal Type", required=True, select=True)
-    start_weight = fields.Float('Start Weight')
-    end_weight = fields.Float('End Weight')
+    min_consumed_feed = fields.Float('Min Consumed Feed (Kg)', required=True)
+    max_consumed_feed = fields.Float('Max Consumed Feed (Kg)', required=True)
     product = fields.Many2One('product.product', 'Product', required=True)
     bom = fields.Function(fields.Many2One('production.bom', 'BOM', domain=[
                 ('output_products', '=', Eval('product', 0)),
@@ -40,29 +40,20 @@ class NutritionProgram(ModelSQL, ModelView):
 
     def get_rec_name(self, name=None):
         return '%s (%s - %s)' % (self.product.rec_name,
-            self.start_weight or '',  self.end_weight or '')
+            self.min_consumed_feed or '', self.max_consumed_feed or '')
 
 
 def _get_nutrition_program(animal):
     pool = Pool()
     Program = pool.get('farm.nutrition.program')
 
-    domain = [
+    consumed_feed = animal.consumed_feed
+    programs = Program.search([
             ('specie', '=', animal.specie),
             ('animal_type', '=', animal.lot.animal_type),
-            ]
-    order = [('end_weight', 'DESC')]
-    weight_domain = []
-    if animal.current_weight:
-        weight = animal.current_weight.weight
-        weight_domain = [
-            ('start_weight', '<=', weight),
-            ('end_weight', '>=', weight),
-            ]
-    programs = Program.search(domain + weight_domain, order=order, limit=1)
-    if len(programs) > 0:
-        return programs[0].id
-    programs = Program.search(weight_domain, order=order, limit=1)
+            ('min_consumed_feed', '<=', consumed_feed),
+            ('max_consumed_feed', '>=', consumed_feed),
+            ], order=[('max_consumed_feed', 'DESC')], limit=1)
     if len(programs) > 0:
         return programs[0].id
 

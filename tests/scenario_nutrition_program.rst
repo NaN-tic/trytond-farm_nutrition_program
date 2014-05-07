@@ -64,6 +64,7 @@ Reload the context::
 Create products::
 
     >>> ProductUom = Model.get('product.uom')
+    >>> kg, = ProductUom.find([('name', '=', 'Kilogram')])
     >>> unit, = ProductUom.find([('name', '=', 'Unit')])
     >>> ProductTemplate = Model.get('product.template')
     >>> Product = Model.get('product.product')
@@ -85,15 +86,16 @@ Create products::
     >>> group_template.save()
     >>> group_product = Product(template=group_template)
     >>> group_product.save()
-    >>> grain_template = ProductTemplate(
-    ...     name='Graing',
-    ...     default_uom=unit,
+    >>> feed_template = ProductTemplate(
+    ...     name='Feed',
+    ...     default_uom=kg,
     ...     type='goods',
     ...     list_price=Decimal('40'),
     ...     cost_price=Decimal('25'))
-    >>> grain_template.save()
-    >>> grain_product = Product(template=grain_template)
-    >>> grain_product.save()
+    >>> feed_template.save()
+    >>> feed_product = Product(template=feed_template)
+    >>> feed_product.save()
+    >>> feed_product.reload()
 
 Create sequence::
 
@@ -162,6 +164,32 @@ Create farm locations::
     ...         'type': 'storage',
     ...         'parent': warehouse.storage_location.id,
     ...         }], config.context)
+    >>> silo = Location(
+    ...     name='Silo',
+    ...     code='S',
+    ...     type='storage',
+    ...     parent=warehouse.storage_location,
+    ...     silo=True,
+    ...     locations_to_fed=[location1_id, location2_id])
+    >>> silo.save()
+
+Put 500 Kg of feed into silo location::
+
+    >>> Move = Model.get('stock.move')
+    >>> provisioning_moves = Move.create([{
+    ...         'product': feed_product.id,
+    ...         'uom': kg.id,
+    ...         'quantity': 500.0,
+    ...         'from_location': party.supplier_location.id,
+    ...         'to_location': silo.id,
+    ...         'planned_date': (now - relativedelta(days=10)).date(),
+    ...         'effective_date': (now - relativedelta(days=10)).date(),
+    ...         'company': config.context.get('company'),
+    ...         'unit_price': feed_product.template.list_price,
+    ...         }],
+    ...     config.context)
+    >>> Move.assign(provisioning_moves, config.context)
+    >>> Move.do(provisioning_moves, config.context)
 
 Create individual::
 
@@ -171,7 +199,8 @@ Create individual::
     ...     specie=pigs_specie,
     ...     breed=pigs_breed,
     ...     number='0001',
-    ...     initial_location=location1_id)
+    ...     initial_location=location1_id,
+    ...     arrival_date=(now - relativedelta(days=5)).date())
     >>> individual.save()
     >>> individual.location.code
     u'L1'
@@ -186,25 +215,33 @@ Create nutrition program::
     >>> nutrition_program = NutritionProgram(
     ...     specie=pigs_specie,
     ...     animal_type='individual',
-    ...     start_weight=10.0,
-    ...     end_weight=30.0,
-    ...     product=grain_product)
+    ...     min_consumed_feed=2.0,
+    ...     max_consumed_feed=10.0,
+    ...     product=feed_product)
     >>> nutrition_program.save()
     >>> individual.nutrition_program == None
     True
 
-Add weight on animal::
+Feed the animal::
 
-    >>> AnimalWeight = Model.get('farm.animal.weight')
-    >>> kg, = ProductUom.find([('name', '=', 'Kilogram')])
-    >>> weight = AnimalWeight(animal=individual,
+    >>> FeedEvent = Model.get('farm.feed.event')
+    >>> feed_event1 = FeedEvent(
+    ...     animal_type='individual',
+    ...     specie=pigs_specie,
+    ...     farm=warehouse,
+    ...     animal=individual,
     ...     timestamp=yesterday,
+    ...     location=individual.location,
+    ...     feed_location=silo,
+    ...     feed_product=feed_product,
     ...     uom=kg,
-    ...     weight=Decimal('15.0'))
-    >>> weight.save()
+    ...     feed_quantity=Decimal('6.0'))
+    >>> feed_event1.feed_product = feed_product
+    >>> feed_event1.save()
+    >>> FeedEvent.validate_event([feed_event1.id], config.context)
     >>> individual.reload()
-    >>> individual.current_weight.weight == Decimal('15.0')
-    True
+    >>> individual.consumed_feed.quantize(Decimal('0.1'))
+    Decimal('6.0')
     >>> individual.nutrition_program == nutrition_program
     True
 
@@ -213,19 +250,32 @@ Create another nutrition program::
     >>> nutrition_program2 = NutritionProgram(
     ...     specie=pigs_specie,
     ...     animal_type='individual',
-    ...     start_weight=50.0,
-    ...     end_weight=70.0,
-    ...     product=grain_product)
+    ...     min_consumed_feed=10.0,
+    ...     max_consumed_feed=50.0,
+    ...     product=feed_product)
     >>> nutrition_program2.save()
-    >>> AnimalWeight = Model.get('farm.animal.weight')
-    >>> kg, = ProductUom.find([('name', '=', 'Kilogram')])
-    >>> weight = AnimalWeight(animal=individual,
-    ...     timestamp=now,
-    ...     uom=kg,
-    ...     weight=Decimal('60.0'))
-    >>> weight.save()
-    >>> individual.reload()
-    >>> individual.current_weight.weight == Decimal('60.0')
+    >>> individual.nutrition_program == nutrition_program
     True
+
+Feed the animal::
+
+    >>> feed_event2 = FeedEvent(
+    ...     animal_type='individual',
+    ...     specie=pigs_specie,
+    ...     farm=warehouse,
+    ...     animal=individual,
+    ...     timestamp=(yesterday + relativedelta(days=5)),
+    ...     start_date=yesterday.date(),
+    ...     location=individual.location,
+    ...     feed_location=silo,
+    ...     feed_product=feed_product,
+    ...     uom=kg,
+    ...     feed_quantity=Decimal('25.0'))
+    >>> feed_event2.feed_product = feed_product
+    >>> feed_event2.save()
+    >>> FeedEvent.validate_event([feed_event2.id], config.context)
+    >>> individual.reload()
+    >>> individual.consumed_feed.quantize(Decimal('0.1'))
+    Decimal('11.0')
     >>> individual.nutrition_program == nutrition_program2
     True
