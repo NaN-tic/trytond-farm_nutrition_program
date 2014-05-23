@@ -107,28 +107,28 @@ class OpenBOM(Wizard):
 class Specie:
     __name__ = 'farm.specie'
 
-    @classmethod
-    def _create_additional_menus(cls, specie, specie_menu, specie_submenu_seq,
-            current_menus, current_actions):
+    def _create_additional_menus(self, specie_menu, specie_submenu_seq,
+            current_menus, current_actions, current_wizards):
         pool = Pool()
         ActWindow = pool.get('ir.action.act_window')
         Group = pool.get('res.group')
         ModelData = pool.get('ir.model.data')
 
-        super(Specie, cls)._create_additional_menus(specie, specie_menu,
-                specie_submenu_seq, current_menus, current_actions)
+        specie_submenu_seq = super(Specie,
+            self)._create_additional_menus(specie_menu, specie_submenu_seq,
+                current_menus, current_actions, current_wizards)
 
         act_window_program = ActWindow(ModelData.get_id(
                 'farm_nutrition_program', 'act_nutrition_program'))
         program_group = Group(ModelData.get_id('farm_nutrition_program',
                 'group_nutrition_program'))
 
-        cls._create_menu_w_action(specie, [
-                ('specie', '=', specie.id),
+        self._create_action_menu([
+                ('specie', '=', self.id),
                 ], {
-                    'specie': specie.id,
+                    'specie': self.id,
                 },
             'Nutrition Programs', specie_menu, specie_submenu_seq,
             'tryton-list', program_group, act_window_program, False,
             current_menus, current_actions)
-        specie_submenu_seq += 1
+        return specie_submenu_seq + 1
