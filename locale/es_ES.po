@@ -24,15 +24,19 @@ msgstr "Fecha de creación"
 
 msgctxt "field:farm.nutrition.program,create_uid:"
 msgid "Create User"
-msgstr "Usuario de creación"
-
-msgctxt "field:farm.nutrition.program,end_weight:"
-msgid "End Weight"
-msgstr "Peso final"
+msgstr "Usuario creación"
 
 msgctxt "field:farm.nutrition.program,id:"
 msgid "ID"
 msgstr "Identificador"
+
+msgctxt "field:farm.nutrition.program,max_consumed_feed:"
+msgid "Max Consumed Feed (Kg)"
+msgstr "Máx. pienso consumido (Kg)"
+
+msgctxt "field:farm.nutrition.program,min_consumed_feed:"
+msgid "Min Consumed Feed (Kg)"
+msgstr "Mín. pienso consumido (Kg)"
 
 msgctxt "field:farm.nutrition.program,product:"
 msgid "Product"
@@ -45,10 +49,6 @@ msgstr "Nombre"
 msgctxt "field:farm.nutrition.program,specie:"
 msgid "Specie"
 msgstr "Especie"
-
-msgctxt "field:farm.nutrition.program,start_weight:"
-msgid "Start Weight"
-msgstr "Peso inicial"
 
 msgctxt "field:farm.nutrition.program,write_date:"
 msgid "Write Date"
@@ -88,7 +88,7 @@ msgstr "Grupo"
 
 msgctxt "selection:farm.nutrition.program,animal_type:"
 msgid "Individual"
-msgstr "Individual"
+msgstr "Individuo"
 
 msgctxt "selection:farm.nutrition.program,animal_type:"
 msgid "Male"

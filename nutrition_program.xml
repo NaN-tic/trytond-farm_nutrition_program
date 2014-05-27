@@ -96,5 +96,19 @@
             <field name="model">farm.nutrition.program,-1</field>
             <field name="action" ref="wizard_bom_open"/>
         </record>
+
+        <!-- menus -->
+        <menuitem id="menu_nutrition_programs" action="act_nutrition_program"
+            parent="farm.menu_specie_menu_template" sequence="31"/>
+        <record model="ir.ui.menu-res.group"
+                id="menu_nutrition_programs_group_admin">
+            <field name="menu" ref="menu_farm_nutrition_programs"/>
+            <field name="group" ref="farm.group_farm_admin"/>
+        </record>
+        <record model="ir.ui.menu-res.group"
+                id="menu_nutrition_programs_group_nutrition_program">
+            <field name="menu" ref="menu_farm_nutrition_programs"/>
+            <field name="group" ref="group_nutrition_program"/>
+        </record>
     </data>
 </tryton>

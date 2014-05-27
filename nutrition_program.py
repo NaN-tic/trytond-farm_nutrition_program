@@ -110,25 +110,24 @@ class Specie:
     def _create_additional_menus(self, specie_menu, specie_submenu_seq,
             current_menus, current_actions, current_wizards):
         pool = Pool()
-        ActWindow = pool.get('ir.action.act_window')
-        Group = pool.get('res.group')
+        Menu = pool.get('ir.ui.menu')
         ModelData = pool.get('ir.model.data')
 
         specie_submenu_seq = super(Specie,
             self)._create_additional_menus(specie_menu, specie_submenu_seq,
-                current_menus, current_actions, current_wizards)
+            current_menus, current_actions, current_wizards)
 
-        act_window_program = ActWindow(ModelData.get_id(
-                'farm_nutrition_program', 'act_nutrition_program'))
-        program_group = Group(ModelData.get_id('farm_nutrition_program',
-                'group_nutrition_program'))
+        nutrition_programs_menu = Menu(
+            ModelData.get_id('farm_nutrition_program',
+                'menu_nutrition_programs'))
 
-        self._create_action_menu([
-                ('specie', '=', self.id),
-                ], {
-                    'specie': self.id,
-                },
-            'Nutrition Programs', specie_menu, specie_submenu_seq,
-            'tryton-list', program_group, act_window_program, False,
-            current_menus, current_actions)
+        new_domain = [
+            ('specie', '=', self.id),
+            ]
+        new_context = {
+            'specie': self.id,
+            }
+        self._duplicate_menu(nutrition_programs_menu, specie_menu,
+            specie_submenu_seq, current_menus, current_actions,
+            current_wizards, new_domain=new_domain, new_context=new_context)
         return specie_submenu_seq + 1
