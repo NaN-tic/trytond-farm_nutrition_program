@@ -70,6 +70,11 @@ msgctxt "model:ir.action,name:wizard_bom_open"
 msgid "BOMs"
 msgstr "Llistes de materials"
 
+#, fuzzy
+msgctxt "model:ir.ui.menu,name:menu_nutrition_programs"
+msgid "Nutrition Programs"
+msgstr "Programes de nutrició"
+
 msgctxt "model:res.group,name:group_nutrition_program"
 msgid "Farm / Nutriton Program"
 msgstr "Granja / Programa de nutrició"

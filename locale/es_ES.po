@@ -74,6 +74,10 @@ msgctxt "model:ir.action.act_window,name:act_nutrition_program"
 msgid "Nutrition Programs"
 msgstr "Programas de alimentación"
 
+msgctxt "model:ir.ui.menu,name:menu_nutrition_programs"
+msgid "Nutrition Programs"
+msgstr "Programas de alimentación"
+
 msgctxt "model:res.group,name:group_nutrition_program"
 msgid "Farm / Nutriton Program"
 msgstr "Granja / Programa de alimentación"

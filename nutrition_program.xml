@@ -102,12 +102,12 @@
             parent="farm.menu_specie_menu_template" sequence="31"/>
         <record model="ir.ui.menu-res.group"
                 id="menu_nutrition_programs_group_admin">
-            <field name="menu" ref="menu_farm_nutrition_programs"/>
+            <field name="menu" ref="menu_nutrition_programs"/>
             <field name="group" ref="farm.group_farm_admin"/>
         </record>
         <record model="ir.ui.menu-res.group"
                 id="menu_nutrition_programs_group_nutrition_program">
-            <field name="menu" ref="menu_farm_nutrition_programs"/>
+            <field name="menu" ref="menu_nutrition_programs"/>
             <field name="group" ref="group_nutrition_program"/>
         </record>
     </data>
