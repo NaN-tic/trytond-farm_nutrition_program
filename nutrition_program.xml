@@ -12,11 +12,6 @@
             <field name="user" ref="res.user_admin"/>
             <field name="group" ref="group_nutrition_program"/>
         </record>
-        <record model="res.user-res.group"
-                id="user_trigger_group_nutrition_programs">
-            <field name="user" ref="res.user_trigger"/>
-            <field name="group" ref="group_nutrition_program"/>
-        </record>
 
         <!-- farm.nutrition.program -->
         <record model="ir.ui.view" id="nutrition_program_view_form">
