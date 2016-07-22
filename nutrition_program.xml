@@ -68,7 +68,7 @@
         <record model="ir.ui.view" id="farm_animal_view_form">
             <field name="model">farm.animal</field>
             <field name="inherit" ref="farm.farm_animal_form_view"/>
-            <field name="type">form</field>
+            <field name="type" eval="None"/>
             <field name="name">farm_animal_form</field>
         </record>
 
@@ -76,7 +76,7 @@
         <record model="ir.ui.view" id="farm_animal_group_view_form">
             <field name="model">farm.animal.group</field>
             <field name="inherit" ref="farm.farm_animal_group_form_view"/>
-            <field name="type">form</field>
+            <field name="type" eval="None"/>
             <field name="name">farm_animal_group_form</field>
         </record>
 
