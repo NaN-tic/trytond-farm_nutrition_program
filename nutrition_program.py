@@ -48,12 +48,12 @@ def _get_nutrition_program(animal):
     Program = pool.get('farm.nutrition.program')
 
     consumed_feed = animal.consumed_feed
-    programs = Program.search([
-            ('specie', '=', animal.specie),
-            ('animal_type', '=', animal.lot.animal_type),
-            ('min_consumed_feed', '<=', consumed_feed),
-            ('max_consumed_feed', '>=', consumed_feed),
-            ], order=[('max_consumed_feed', 'DESC')], limit=1)
+    to_search = [('specie', '=', animal.specie),
+        ('min_consumed_feed', '<=', consumed_feed),
+        ('max_consumed_feed', '>=', consumed_feed)]
+    if animal.lot:
+        to_search.append('animal_type', '=', animal.lot.animal_type)
+    programs = Program.search(to_search, limit=1)
     if len(programs) > 0:
         return programs[0].id
 
