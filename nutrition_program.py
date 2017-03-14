@@ -52,7 +52,7 @@ def _get_nutrition_program(animal):
         ('min_consumed_feed', '<=', consumed_feed),
         ('max_consumed_feed', '>=', consumed_feed)]
     if animal.lot:
-        to_search.append('animal_type', '=', animal.lot.animal_type)
+        to_search.append(('animal_type', '=', animal.lot.animal_type))
     programs = Program.search(to_search, limit=1)
     if len(programs) > 0:
         return programs[0].id
