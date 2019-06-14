@@ -7,7 +7,6 @@ from trytond.transaction import Transaction
 from trytond.wizard import Wizard, StateAction
 
 __all__ = ['NutritionProgram', 'Animal', 'AnimalGroup', 'OpenBOM', 'Specie']
-__metaclass__ = PoolMeta
 
 
 class NutritionProgram(ModelSQL, ModelView):
@@ -15,7 +14,9 @@ class NutritionProgram(ModelSQL, ModelView):
     __name__ = 'farm.nutrition.program'
 
     specie = fields.Many2One('farm.specie', 'Specie', required=True,
-        readonly=True, select=True)
+        select=True, states={
+            'readonly': True,
+            })
     animal_type = fields.Selection([
         ('male', 'Male'),
         ('female', 'Female'),
@@ -58,7 +59,7 @@ def _get_nutrition_program(animal):
         return programs[0].id
 
 
-class Animal:
+class Animal(metaclass=PoolMeta):
     __name__ = 'farm.animal'
 
     nutrition_program = fields.Function(
@@ -69,7 +70,7 @@ class Animal:
         return _get_nutrition_program(self)
 
 
-class AnimalGroup:
+class AnimalGroup(metaclass=PoolMeta):
     __name__ = 'farm.animal.group'
 
     nutrition_program = fields.Function(
@@ -104,7 +105,7 @@ class OpenBOM(Wizard):
         return 'end'
 
 
-class Specie:
+class Specie(metaclass=PoolMeta):
     __name__ = 'farm.specie'
 
     def _create_additional_menus(self, specie_menu, specie_submenu_seq,

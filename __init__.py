@@ -2,16 +2,16 @@
 # copyright notices and license terms.
 
 from trytond.pool import Pool
-from .nutrition_program import *
+from . import nutrition_program
 
 
 def register():
     Pool.register(
-        Animal,
-        AnimalGroup,
-        NutritionProgram,
-        Specie,
+        nutrition_program.Animal,
+        nutrition_program.AnimalGroup,
+        nutrition_program.NutritionProgram,
+        nutrition_program.Specie,
         module='farm_nutrition_program', type_='model')
     Pool.register(
-        OpenBOM,
+        nutrition_program.OpenBOM,
         module='farm_nutrition_program', type_='wizard')

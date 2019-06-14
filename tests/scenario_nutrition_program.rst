@@ -2,204 +2,129 @@
 Nutrition Program Scenario
 ==========================
 
-=============
-General Setup
-=============
-
 Imports::
 
     >>> import datetime
     >>> from dateutil.relativedelta import relativedelta
     >>> from decimal import Decimal
-    >>> from proteus import config, Model, Wizard
+    >>> from proteus import Model, Wizard
+    >>> from trytond.tests.tools import activate_modules
     >>> from trytond.modules.company.tests.tools import create_company, \
     ...     get_company
+    >>> from trytond.modules.account.tests.tools import create_fiscalyear, \
+    ...     create_chart, get_accounts
+    >>> from trytond.modules.farm.tests.tools import create_specie, \
+    ...     create_users, create_feed_product
     >>> now = datetime.datetime.now()
     >>> yesterday = datetime.datetime.now() - relativedelta(days=1)
     >>> today = datetime.date.today()
 
-Create database::
+Install module::
 
-    >>> config = config.set_trytond()
-    >>> config.pool.test = True
-
-Install farm::
-
-    >>> Module = Model.get('ir.module')
-    >>> modules = Module.find([
-    ...         ('name', '=', 'farm_nutrition_program'),
-    ...         ])
-    >>> Module.install([x.id for x in modules], config.context)
-    >>> Wizard('ir.module.install_upgrade').execute('upgrade')
+    >>> config = activate_modules('farm_nutrition_program')
 
 Create company::
 
     >>> _ = create_company()
     >>> company = get_company()
-    >>> party = company.party
-
-Reload the context::
-
-    >>> User = Model.get('res.user')
-    >>> config._context = User.get_preferences(True, config.context)
-
-Create products::
-
-    >>> ProductUom = Model.get('product.uom')
-    >>> kg, = ProductUom.find([('name', '=', 'Kilogram')])
-    >>> unit, = ProductUom.find([('name', '=', 'Unit')])
-    >>> ProductTemplate = Model.get('product.template')
-    >>> Product = Model.get('product.product')
-    >>> individual_template = ProductTemplate(
-    ...     name='Male Pig',
-    ...     default_uom=unit,
-    ...     type='goods',
-    ...     list_price=Decimal('40'),
-    ...     cost_price=Decimal('25'))
-    >>> individual_template.save()
-    >>> individual_product = Product(template=individual_template)
-    >>> individual_product.save()
-    >>> group_template = ProductTemplate(
-    ...     name='Group of Pig',
-    ...     default_uom=unit,
-    ...     type='goods',
-    ...     list_price=Decimal('30'),
-    ...     cost_price=Decimal('20'))
-    >>> group_template.save()
-    >>> group_product = Product(template=group_template)
-    >>> group_product.save()
-    >>> feed_template = ProductTemplate(
-    ...     name='Feed',
-    ...     default_uom=kg,
-    ...     type='goods',
-    ...     list_price=Decimal('40'),
-    ...     cost_price=Decimal('25'))
-    >>> feed_template.save()
-    >>> feed_product = Product(template=feed_template)
-    >>> feed_product.save()
-    >>> feed_product.reload()
-
-Create sequence::
-
-    >>> Sequence = Model.get('ir.sequence')
-    >>> event_order_sequence = Sequence(
-    ...     name='Event Order Pig Warehouse 1',
-    ...     code='farm.event.order',
-    ...     padding=4)
-    >>> event_order_sequence.save()
-    >>> individual_sequence = Sequence(
-    ...     name='Individual Pig Warehouse 1',
-    ...     code='farm.animal',
-    ...     padding=4)
-    >>> individual_sequence.save()
-    >>> group_sequence = Sequence(
-    ...     name='Groups Pig Warehouse 1',
-    ...     code='farm.animal.group',
-    ...     padding=4)
-    >>> group_sequence.save()
 
 Create specie::
+
+    >>> specie, breed, products = create_specie('Pig')
+    >>> individual_product = products['individual']
+    >>> group_product = products['group']
+    >>> female_product = products['female']
+    >>> male_product = products['male']
+    >>> semen_product = products['semen']
+
+Create farm users::
+
+    >>> users = create_users(company)
+    >>> individual_user = users['individual']
+    >>> group_user = users['group']
+    >>> female_user = users['female']
+    >>> male_user = users['male']
+
+Get locations::
 
     >>> Location = Model.get('stock.location')
     >>> lost_found_location, = Location.find([('type', '=', 'lost_found')])
     >>> warehouse, = Location.find([('type', '=', 'warehouse')])
-    >>> Specie = Model.get('farm.specie')
-    >>> SpecieBreed = Model.get('farm.specie.breed')
-    >>> SpecieFarmLine = Model.get('farm.specie.farm_line')
-    >>> pigs_specie = Specie(
-    ...     name='Pigs',
-    ...     male_enabled=False,
-    ...     female_enabled=False,
-    ...     individual_enabled=True,
-    ...     individual_product=individual_product,
-    ...     group_enabled=True,
-    ...     group_product=group_product,
-    ...     removed_location=lost_found_location,
-    ...     foster_location=lost_found_location,
-    ...     lost_found_location=lost_found_location,
-    ...     feed_lost_found_location=lost_found_location)
-    >>> pigs_specie.save()
-    >>> pigs_breed = SpecieBreed(
-    ...     specie=pigs_specie,
-    ...     name='Holland')
-    >>> pigs_breed.save()
-    >>> pigs_farm_line = SpecieFarmLine(
-    ...     specie=pigs_specie,
-    ...     farm=warehouse,
-    ...     event_order_sequence=event_order_sequence,
-    ...     has_individual=True,
-    ...     individual_sequence=individual_sequence,
-    ...     has_group=True,
-    ...     group_sequence=group_sequence)
-    >>> pigs_farm_line.save()
+    >>> production_location, = Location.find([('type', '=', 'production')])
+
+Create feed product::
+
+    >>> feed_product = create_feed_product('Feed', 40, 25)
 
 Create farm locations::
 
-    >>> location1_id, location2_id = Location.create([{
-    ...         'name': 'Location 1',
-    ...         'code': 'L1',
-    ...         'type': 'storage',
-    ...         'parent': warehouse.storage_location.id,
-    ...         }, {
-    ...         'name': 'Location 2',
-    ...         'code': 'L2',
-    ...         'type': 'storage',
-    ...         'parent': warehouse.storage_location.id,
-    ...         }], config.context)
-    >>> silo = Location(
-    ...     name='Silo',
-    ...     code='S',
-    ...     type='storage',
-    ...     parent=warehouse.storage_location,
-    ...     silo=True,
-    ...     locations_to_fed=[location1_id, location2_id])
+    >>> Location = Model.get('stock.location')
+    >>> location1 = Location()
+    >>> location1.name = 'Location 1'
+    >>> location1.code = 'L1'
+    >>> location1.type = 'storage'
+    >>> location1.parent = warehouse.storage_location
+    >>> location1.save()
+    >>> location2 = Location()
+    >>> location2.name = 'Location 2'
+    >>> location2.code = 'L2'
+    >>> location2.type = 'storage'
+    >>> location2.parent = warehouse.storage_location
+    >>> location2.save()
+    >>> silo = Location()
+    >>> silo.name = 'Silo'
+    >>> silo.code = 'S'
+    >>> silo.type = 'storage'
+    >>> silo.parent = warehouse.storage_location
+    >>> silo.silo = True
+    >>> silo.locations_to_fed.append(location1)
+    >>> silo.locations_to_fed.append(location2)
     >>> silo.save()
 
 Put 500 Kg of feed into silo location::
 
     >>> Move = Model.get('stock.move')
-    >>> provisioning_moves = Move.create([{
-    ...         'product': feed_product.id,
-    ...         'uom': kg.id,
-    ...         'quantity': 500.0,
-    ...         'from_location': party.supplier_location.id,
-    ...         'to_location': silo.id,
-    ...         'planned_date': (now - relativedelta(days=10)).date(),
-    ...         'effective_date': (now - relativedelta(days=10)).date(),
-    ...         'company': config.context.get('company'),
-    ...         'unit_price': feed_product.template.list_price,
-    ...         }],
-    ...     config.context)
-    >>> Move.assign(provisioning_moves, config.context)
-    >>> Move.do(provisioning_moves, config.context)
+    >>> provisioning_move = Move()
+    >>> provisioning_move.product = feed_product
+    >>> provisioning_move.uom = feed_product.default_uom
+    >>> provisioning_move.quantity = 500.0
+    >>> provisioning_move.from_location = company.party.supplier_location
+    >>> provisioning_move.to_location = silo
+    >>> provisioning_move.planned_date = (now - relativedelta(days=10)).date()
+    >>> provisioning_move.effective_date = (now - relativedelta(days=10)).date()
+    >>> provisioning_move.company = company
+    >>> provisioning_move.unit_price = feed_product.template.list_price
+    >>> provisioning_move.save()
+    >>> provisioning_move.click('assign')
+    >>> provisioning_move.click('do')
 
 Create individual::
 
     >>> Animal = Model.get('farm.animal')
-    >>> individual = Animal(
-    ...     type='individual',
-    ...     specie=pigs_specie,
-    ...     breed=pigs_breed,
-    ...     number='0001',
-    ...     initial_location=location1_id,
-    ...     arrival_date=(now - relativedelta(days=5)).date())
+    >>> individual = Animal()
+    >>> individual.type = 'individual'
+    >>> individual.specie = specie
+    >>> individual.breed = breed
+    >>> individual.number = '0001'
+    >>> individual.initial_location = location1
+    >>> individual.arrival_date = (now - relativedelta(days=5)).date()
     >>> individual.save()
     >>> individual.location.code
-    u'L1'
+    'L1'
     >>> individual.farm.code
-    u'WH'
+    'WH'
     >>> individual.nutrition_program == None
     True
 
 Create nutrition program::
 
     >>> NutritionProgram = Model.get('farm.nutrition.program')
-    >>> nutrition_program = NutritionProgram(
-    ...     specie=pigs_specie,
-    ...     animal_type='individual',
-    ...     min_consumed_feed=2.0,
-    ...     max_consumed_feed=10.0,
-    ...     product=feed_product)
+    >>> nutrition_program = NutritionProgram()
+    >>> nutrition_program.specie = specie
+    >>> nutrition_program.animal_type = 'individual'
+    >>> nutrition_program.min_consumed_feed = 2.0
+    >>> nutrition_program.max_consumed_feed = 10.0
+    >>> nutrition_program.product = feed_product
     >>> nutrition_program.save()
     >>> individual.nutrition_program == None
     True
@@ -207,20 +132,20 @@ Create nutrition program::
 Feed the animal::
 
     >>> FeedEvent = Model.get('farm.feed.event')
-    >>> feed_event1 = FeedEvent(
-    ...     animal_type='individual',
-    ...     specie=pigs_specie,
-    ...     farm=warehouse,
-    ...     animal=individual,
-    ...     timestamp=yesterday,
-    ...     location=individual.location,
-    ...     feed_location=silo,
-    ...     feed_product=feed_product,
-    ...     uom=kg,
-    ...     feed_quantity=Decimal('6.0'))
+    >>> feed_event1 = FeedEvent()
+    >>> feed_event1.animal_type = 'individual'
+    >>> feed_event1.specie = specie
+    >>> feed_event1.farm = warehouse
+    >>> feed_event1.animal = individual
+    >>> feed_event1.timestamp = yesterday
+    >>> feed_event1.location = individual.location
+    >>> feed_event1.feed_location = silo
+    >>> feed_event1.feed_product = feed_product
+    >>> feed_event1.uom = feed_product.default_uom
+    >>> feed_event1.feed_quantity = Decimal('6.0')
     >>> feed_event1.feed_product = feed_product
     >>> feed_event1.save()
-    >>> FeedEvent.validate_event([feed_event1.id], config.context)
+    >>> feed_event1.click('validate_event')
     >>> individual.reload()
     >>> individual.consumed_feed.quantize(Decimal('0.1'))
     Decimal('6.0')
@@ -229,35 +154,35 @@ Feed the animal::
 
 Create another nutrition program::
 
-    >>> nutrition_program2 = NutritionProgram(
-    ...     specie=pigs_specie,
-    ...     animal_type='individual',
-    ...     min_consumed_feed=10.0,
-    ...     max_consumed_feed=50.0,
-    ...     product=feed_product)
+    >>> nutrition_program2 = NutritionProgram()
+    >>> nutrition_program2.specie = specie
+    >>> nutrition_program2.animal_type = 'individual'
+    >>> nutrition_program2.min_consumed_feed = 10.0
+    >>> nutrition_program2.max_consumed_feed = 50.0
+    >>> nutrition_program2.product = feed_product
     >>> nutrition_program2.save()
     >>> individual.nutrition_program == nutrition_program
     True
 
 Feed the animal::
 
-    >>> feed_event2 = FeedEvent(
-    ...     animal_type='individual',
-    ...     specie=pigs_specie,
-    ...     farm=warehouse,
-    ...     animal=individual,
-    ...     timestamp=(yesterday + relativedelta(days=5)),
-    ...     start_date=yesterday.date(),
-    ...     location=individual.location,
-    ...     feed_location=silo,
-    ...     feed_product=feed_product,
-    ...     uom=kg,
-    ...     feed_quantity=Decimal('25.0'))
+    >>> feed_event2 = FeedEvent()
+    >>> feed_event2.animal_type = 'individual'
+    >>> feed_event2.specie = specie
+    >>> feed_event2.farm = warehouse
+    >>> feed_event2.animal = individual
+    >>> feed_event2.timestamp = now
+    >>> feed_event2.start_date = yesterday.date()
+    >>> feed_event2.location = individual.location
+    >>> feed_event2.feed_location = silo
+    >>> feed_event2.feed_product = feed_product
+    >>> feed_event2.uom = feed_product.default_uom
+    >>> feed_event2.feed_quantity = Decimal('25.0')
     >>> feed_event2.feed_product = feed_product
     >>> feed_event2.save()
-    >>> FeedEvent.validate_event([feed_event2.id], config.context)
+    >>> feed_event2.click('validate_event')
     >>> individual.reload()
     >>> individual.consumed_feed.quantize(Decimal('0.1'))
-    Decimal('11.0')
+    Decimal('31.0')
     >>> individual.nutrition_program == nutrition_program2
     True
