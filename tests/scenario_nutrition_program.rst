@@ -95,7 +95,6 @@ Put 500 Kg of feed into silo location::
     >>> provisioning_move.company = company
     >>> provisioning_move.unit_price = feed_product.template.list_price
     >>> provisioning_move.save()
-    >>> provisioning_move.click('assign')
     >>> provisioning_move.click('do')
 
 Create individual::
