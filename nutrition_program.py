@@ -13,8 +13,7 @@ class NutritionProgram(ModelSQL, ModelView):
     'Nutrition Program'
     __name__ = 'farm.nutrition.program'
 
-    specie = fields.Many2One('farm.specie', 'Specie', required=True,
-        select=True, states={
+    specie = fields.Many2One('farm.specie', 'Specie', required=True, states={
             'readonly': True,
             })
     animal_type = fields.Selection([
@@ -22,7 +21,7 @@ class NutritionProgram(ModelSQL, ModelView):
         ('female', 'Female'),
         ('individual', 'Individual'),
         ('group', 'Group'),
-        ], "Animal Type", required=True, select=True)
+        ], "Animal Type", required=True)
     min_consumed_feed = fields.Float('Min Consumed Feed (Kg)', required=True)
     max_consumed_feed = fields.Float('Max Consumed Feed (Kg)', required=True)
     product = fields.Many2One('product.product', 'Product', required=True)
