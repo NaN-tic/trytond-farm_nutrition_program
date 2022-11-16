@@ -94,6 +94,7 @@ Put 500 Kg of feed into silo location::
     >>> provisioning_move.effective_date = (now - relativedelta(days=10)).date()
     >>> provisioning_move.company = company
     >>> provisioning_move.unit_price = feed_product.template.list_price
+    >>> provisioning_move.currency = company.currency
     >>> provisioning_move.save()
     >>> provisioning_move.click('do')
 
