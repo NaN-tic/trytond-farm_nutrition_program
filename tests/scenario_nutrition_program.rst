@@ -86,7 +86,7 @@ Put 500 Kg of feed into silo location::
     >>> Move = Model.get('stock.move')
     >>> provisioning_move = Move()
     >>> provisioning_move.product = feed_product
-    >>> provisioning_move.uom = feed_product.default_uom
+    >>> provisioning_move.unit = feed_product.default_uom
     >>> provisioning_move.quantity = 500.0
     >>> provisioning_move.from_location = company.party.supplier_location
     >>> provisioning_move.to_location = silo
