@@ -87,10 +87,7 @@ class OpenBOM(Wizard):
     open_ = StateAction('production.act_bom_list')
 
     def do_open_(self, action):
-        pool = Pool()
-        NutritionProgram = pool.get('farm.nutrition.program')
-
-        program = NutritionProgram(Transaction().context.get('active_id'))
+        program = self.record
 
         bom_ids = []
         if program.product.boms:
