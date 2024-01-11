@@ -27,7 +27,7 @@ class NutritionProgram(ModelSQL, ModelView):
     product = fields.Many2One('product.product', 'Product', required=True)
     bom = fields.Function(fields.Many2One('production.bom', 'BOM', domain=[
                 ('output_products', '=', Eval('product', 0)),
-                ], depends=['product']),
+                ]),
         'get_bom')
 
     @staticmethod
