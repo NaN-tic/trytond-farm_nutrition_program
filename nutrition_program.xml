@@ -104,4 +104,14 @@
             <field name="group" ref="group_nutrition_program"/>
         </record>
     </data>
+    <data>
+        <record model="ir.action-res.group" id="bom_open_group_nutrition_program">
+            <field name="action" ref="wizard_bom_open"/>
+            <field name="group" ref="group_nutrition_program"/>
+        </record>
+        <record model="ir.action-res.group" id="bom_open_group_farm_admin">
+            <field name="action" ref="wizard_bom_open"/>
+            <field name="group" ref="farm.group_farm_admin"/>
+        </record>
+    </data>
 </tryton>
